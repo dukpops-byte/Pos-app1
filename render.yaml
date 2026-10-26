@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: pos-app
+    runtime: python
+    buildCommand: pip install -r requirements-postgres.txt
+    startCommand: gunicorn --workers 2 --threads 4 --timeout 120 POS_postgresql:app
+    healthCheckPath: /login
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: POS_SECRET_KEY
+        generateValue: true
+      - key: POS_SUPERADMIN_USERNAME
+        sync: false
+      - key: POS_SUPERADMIN_PASSWORD
+        sync: false
